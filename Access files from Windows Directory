@@ -5,26 +5,39 @@ Using OS
 import os
 
 path = r'C:/Users/UserName/Path to the root folder/' # path to the folder location 
-all_files = os.walk(path,topdown= True) # Returns three tuple with dirpath, dirnames, and filenames. If there are no files, [] empty list appears. 
+topDownPath = os.walk(path,topdown= True) # Returns three tuple with dirpath, dirnames, and filenames. If there are no files, [] empty list appears. 
 
 # Get the list of all files in directory tree at given path
-fileList = [] # initialize empty list to store all file names
-for (dirpath, dirnames, filenames) in all_files:
-    fileList += [os.path.join(dirpath, file) for file in filenames] # use os.path.join to get full path to a file. append to the fileList array
+all_files = [] # initialize empty list to store all file names
+for (dirpath, dirnames, filenames) in topDownPath:
+    all_files += [os.path.join(dirpath, file) for file in filenames] # use os.path.join to get full path to a file. append to the fileList array
 
-print(fileList) # Print file path to all files under the parent folder. 
+print(all_files) # Print file path to all files under the parent folder. 
 
 
 """
-Using Glob
+Using glob
 """
 import glob
-path = r'C:/Users/v-birau/OneDrive - Microsoft/Education Data/Tables\Student/' # path to the folder location 
+ 
+path = r'C:/Users/Your path to the root folder/' # path to the folder location 
 
-fileList = [] 
+all_files = glob.glob(path+ r'\**\*.csv', recursive= True) #returns a list of files(.csv format only) including its path
+print(all_files) # Print file path to all csv files under the parent folder
+
+
 
 """
-Get student roster file from all folders 
+Combine all files into a single DataFrame 
 """
-all_files = glob.glob(path+ r'\**\*.csv', recursive= True)
-print(all_files)
+
+import pandas as pd 
+
+li =[] # empty list
+for filename in all_files:
+    df = pd.read_csv(filename, index_col=None, header=0)
+    li.append(df) # Append rows of other to the end of caller, returning a new object.
+# print(li) # The output will have rows inclding column Headers
+
+finalDF = pd.concat(li, axis=0, ignore_index=True)
+print(finalDF)
