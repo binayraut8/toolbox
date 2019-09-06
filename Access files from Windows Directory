@@ -1,0 +1,30 @@
+"""
+Using OS
+"""
+
+import os
+
+path = r'C:/Users/UserName/Path to the root folder/' # path to the folder location 
+all_files = os.walk(path,topdown= True) # Returns three tuple with dirpath, dirnames, and filenames. If there are no files, [] empty list appears. 
+
+# Get the list of all files in directory tree at given path
+fileList = [] # initialize empty list to store all file names
+for (dirpath, dirnames, filenames) in all_files:
+    fileList += [os.path.join(dirpath, file) for file in filenames] # use os.path.join to get full path to a file. append to the fileList array
+
+print(fileList) # Print file path to all files under the parent folder. 
+
+
+"""
+Using Glob
+"""
+import glob
+path = r'C:/Users/v-birau/OneDrive - Microsoft/Education Data/Tables\Student/' # path to the folder location 
+
+fileList = [] 
+
+"""
+Get student roster file from all folders 
+"""
+all_files = glob.glob(path+ r'\**\*.csv', recursive= True)
+print(all_files)
